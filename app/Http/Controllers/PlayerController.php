@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Location;
 use App\Models\Administrator;
+use App\Exports\PlayerExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
 
@@ -22,6 +24,11 @@ class PlayerController extends Controller
             'administrator' => Administrator::all()
         ]);
     }
+
+    public function export_excel()
+	{
+		return Excel::download(new PlayerExport, 'player.xlsx');
+	}
 
     /**
      * Show the form for creating a new resource.

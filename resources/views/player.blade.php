@@ -37,7 +37,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <a href="#" class="btn btn-primary">Export to excel</a>
+                                <a href="/player/export_excel" class="btn btn-primary">Export to excel</a>
                             </div>
                             
                         </div>

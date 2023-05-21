@@ -44,5 +44,6 @@ Route::prefix('/location')->group(function(){
     Route::get('/destroy/{location}', [LocationController::class, 'destroy']);
 });
 Route::get('/player', [PlayerController::class, 'index']);
+Route::get('/player/export_excel', [PlayerController::class, 'export_excel']);
 
 require __DIR__.'/auth.php';

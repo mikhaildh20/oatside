@@ -18,25 +18,25 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request, Administrator $administrator)
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-   
-        $credentials = $request->only('username', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('index')->withSuccess('Signed in');
-        }
-  
-        return redirect("login")->withSuccess('Login details are not valid');
+        $username = $request->input('username');
+		$password = $request->input('password');
+		if ($username == Administrator::where('username') && $password == Administrator::where('password')) {
+			$request->session();
+			return redirect('/index');
+		} else {
+			$data = array(
+				'msg' => 'Invalid'
+			);
+			return view('/')->with($data);
+		}
     }
     public function logout(){
         Session::flush();
         Auth::logout();
   
-        return Redirect('login');
+        return Redirect('/');
     }
 
     /**

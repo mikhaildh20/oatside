@@ -33,6 +33,9 @@
                             <div class="form-group mb-3">
                                 <input type="password" placeholder="Password" id="password" class="form-control" name="password" required>
                             </div>
+                            @if(session('error'))
+                            <p class="text-danger text-center">{{ session('error') }}</p>
+                            @endif
                             <div class="d-grid mx-auto">
                                 <button type="submit" class="btn btn-dark btn-block">Signin</button>
                             </div>
