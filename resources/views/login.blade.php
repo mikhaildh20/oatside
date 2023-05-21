@@ -25,17 +25,17 @@
                 <div class="card">
                     <h3 class="card-header text-center">Login</h3>
                     <div class="card-body">
-                        <form method="POST" action="/login">
+                        <form method="POST" action="/loginprocess">
+                            @if(session('error'))
+                            <p class="text-danger text-center">{{ session('error') }}</p>
+                            @endif
                             @csrf
                             <div class="form-group mb-3">
-                                <input type="text" placeholder="Username" id="username" class="form-control" name="username" required autofocus>
+                                <input type="text" placeholder="Username" id="username" class="form-control" name="username" required>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="password" placeholder="Password" id="password" class="form-control" name="password" required>
                             </div>
-                            @if(session('error'))
-                            <p class="text-danger text-center">{{ session('error') }}</p>
-                            @endif
                             <div class="d-grid mx-auto">
                                 <button type="submit" class="btn btn-dark btn-block">Signin</button>
                             </div>

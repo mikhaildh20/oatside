@@ -24,7 +24,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/loginprocess', [LoginController::class, 'loginprocess']);
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/index', [HomeController::class, 'index']);
 Route::prefix('/city')->group(function(){

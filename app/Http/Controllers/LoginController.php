@@ -18,25 +18,36 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request, Administrator $administrator)
+    public function loginprocess(Request $request, Administrator $administrator)
     {
-        $username = $request->input('username');
-		$password = $request->input('password');
-		if ($username == Administrator::where('username') && $password == Administrator::where('password')) {
-			$request->session();
-			return redirect('/index');
-		} else {
-			$data = array(
-				'msg' => 'Invalid'
-			);
-			return view('/')->with($data);
+        // $request->validate([
+        //     'username' => 'required',
+        //     'password' => 'required',
+        // ]);
+   
+        // $credentials = $request->only('username', 'password');
+        // if (Auth::attempt($credentials)) {
+        //     return redirect()->intended('/index')->withSuccess('Signed in');
+        // }
+        // return back()->withSuccess('Oppes! You have entered invalid credentials');
+  
+        // return redirect("/")->withSuccess('Login details are not valid');
+        //
+        $admin = Administrator::where('username', $request->username)->where('password', $request->password)->first();
+        if(!$admin){
+            $request->session();
+            return back()->with('error', "Wrong Username or Password!");
+        } else {
+            return redirect('/index')->with('alert', "Login Success!");
 		}
     }
-    public function logout(){
-        Session::flush();
-        Auth::logout();
+    public function logout(Request $request){
+        // Session::flush();
+        // Auth::logout();
   
-        return Redirect('/');
+        // return Redirect('/');
+        $request->session()->forget('username');
+		return redirect('/');
     }
 
     /**
