@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Administrator;
+use App\Models\Location;
+use App\Models\Game;
 
 class HomeController extends Controller
 {
@@ -20,7 +22,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', [
+        $player = Game::count();
+        $location = Location::count();
+        $product = Game::sum('prize');
+
+        return view('home', compact('player', 'location', 'product'),[
             'administrator' => Administrator::all()
         ]);
     }
