@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\LocationController;
@@ -23,9 +24,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [LoginController::class, 'index']);
-Route::post('/loginprocess', [LoginController::class, 'loginprocess']);
-Route::get('/logout', [LoginController::class, 'logout']);
+// Route::get('/', [LoginController::class, 'index']);
+// Route::post('/loginprocess', [LoginController::class, 'loginprocess']);
+// Route::get('/logout', [LogoutController::class, 'logout']);
 Route::get('/index', [HomeController::class, 'index']);
 Route::prefix('/city')->group(function(){
     Route::get('/index', [CityController::class, 'index']);
@@ -45,5 +46,16 @@ Route::prefix('/location')->group(function(){
 });
 Route::get('/player', [PlayerController::class, 'index']);
 Route::get('/player/export_excel', [PlayerController::class, 'export_excel']);
+Route::group(['namespace' => 'App\Http\Controllers'], function()
+    {
+        Route::group(['middleware' => ['guest']], function() {
+            Route::get('/', [LoginController::class, 'index'])->name('login.show');
+            Route::post('/loginprocess', [LoginController::class, 'loginprocess'])->name('login.perform');
+    
+        });
+        Route::group(['middleware' => ['auth']], function() {
+            Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        });
+});
 
 require __DIR__.'/auth.php';

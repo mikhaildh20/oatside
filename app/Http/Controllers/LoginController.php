@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Administrator;
-use Auth;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -18,36 +18,25 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function loginprocess(Request $request, Administrator $administrator)
+    public function loginprocess(LoginRequest $request)
     {
-        // $request->validate([
-        //     'username' => 'required',
-        //     'password' => 'required',
-        // ]);
-   
-        // $credentials = $request->only('username', 'password');
-        // if (Auth::attempt($credentials)) {
-        //     return redirect()->intended('/index')->withSuccess('Signed in');
-        // }
-        // return back()->withSuccess('Oppes! You have entered invalid credentials');
-  
-        // return redirect("/")->withSuccess('Login details are not valid');
-        //
-        $admin = Administrator::where('username', $request->username)->where('password', $request->password)->first();
-        if(!$admin){
-            $request->session();
-            return back()->with('error', "Wrong Username or Password!");
-        } else {
-            return redirect('/index')->with('alert', "Login Success!");
-		}
+        $credentials = $request->getCredentials();
+
+        if(!Auth::validate($credentials)):
+            return redirect()->to('login')
+                ->withErrors(trans('auth.failed'));
+        endif;
+
+        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+
+        Auth::login($user);
+
+        return $this->authenticated($request, $user);
     }
-    public function logout(Request $request){
-        // Session::flush();
-        // Auth::logout();
-  
-        // return Redirect('/');
-        $request->session()->forget('username');
-		return redirect('/');
+
+    protected function authenticated(Request $request, $user) 
+    {
+        return redirect()->intended();
     }
 
     /**

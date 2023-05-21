@@ -12,9 +12,11 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Administrator $administrator)
+    
+      
+    public function index()
     {
-        return view('home');
+        return view('index');
     }
 
     /**
